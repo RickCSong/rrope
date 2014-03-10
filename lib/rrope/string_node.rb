@@ -1,18 +1,17 @@
 module Rope
   class StringNode < Node
-    extend Forwardable
-    def_delegators :@data, :slice
-    def_delegator :@data, :slice, :char_at
+    alias_method :subtree_weight, :weight
 
     def initialize(string)
       @data = string
-      @length = string.length
+      @weight = string.length
       @depth = 0
     end
 
-    def subtree(from, length)
-
+    def index(i)
+      @data[i]
     end
+    alias_method :[], :index
 
   end
 end

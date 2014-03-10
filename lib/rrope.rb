@@ -3,6 +3,7 @@ require 'forwardable'
 require 'rrope/version'
 require 'rrope/node'
 require 'rrope/string_node'
+require 'rrope/concat_node'
 
 require 'rrope/string'
 
@@ -10,7 +11,7 @@ module Rope
   class Rope
     extend Forwardable
 
-    def_delegators :@root, :to_s, :length, :rebalance!
+    def_delegators :@root, :to_s, :weight, :rebalance!
 
     def initialize(arg=nil)
       case arg
@@ -23,17 +24,27 @@ module Rope
       end
     end
 
-    def +(other)
-      Rope.new(concatenate(other))
-    end
-    alias_method :+, :concat
-
     def ==(other)
       to_s == other.to_s
     end
 
     def dup
       Rope.new(root)
+    end
+
+    # Returns the character at position i
+    def index(i)
+      root.index(i)
+    end
+    alias_method :[], :index
+
+    def +(other)
+      Rope.new(concatenate(other))
+    end
+    alias_method :concat, :+
+
+    def rebalance!
+
     end
 
     protected
@@ -44,9 +55,9 @@ module Rope
       def concatenate(other)
         case other
           when String
-            # TODO:
+            ConcatenationNode.new(root, StringNode.new(other))
           when Rope
-            # TODO:
+            ConcatenationNode.new(root, other.root)
         end
       end
   end

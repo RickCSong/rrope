@@ -24,15 +24,45 @@ describe Rope do
     end
   end
 
-  context '#index' do
-    it '' do
-      pending
+  context '#concat' do
+    it 'should concatenate a Rope and a String' do
+      rope = Rope::Rope.new('hello')
+      rope = rope.concat(' world')
+      expect(rope.to_s).to eql('hello world')
+    end
+
+    it 'should concatenate a Rope and another Rope' do
+      rope = Rope::Rope.new('hello')
+      other = Rope::Rope.new(' world')
+      rope = rope.concat(other)
+      expect(rope.to_s).to eql('hello world')
+    end
+
+    it 'should allow use of :+' do
+      rope = Rope::Rope.new('hello')
+      other = Rope::Rope.new(' world')
+      rope = rope + other
+      expect(rope.to_s).to eql('hello world')
     end
   end
 
-  context '#concat' do
-    it '' do
-      pending
+  context '#index' do
+    let(:rope) do
+      rope = Rope::Rope.new('01234')
+      rope += '56789'
+      rope += 'abcde'
+    end
+
+    it 'should return correct character for a given index' do
+      expect(rope.index(0)).to eql('0')
+      expect(rope.index(5)).to eql('5')
+      expect(rope.index(10)).to eql('a')
+    end
+
+    it 'should respond to bracket syntax' do
+      expect(rope[0]).to eql('0')
+      expect(rope[5]).to eql('5')
+      expect(rope[10]).to eql('a')
     end
   end
 
