@@ -1,6 +1,10 @@
 require 'forwardable'
 
 require 'rrope/version'
+require 'rrope/node'
+require 'rrope/string_node'
+
+require 'rrope/string'
 
 module Rope
   class Rope
@@ -22,6 +26,7 @@ module Rope
     def +(other)
       Rope.new(concatenate(other))
     end
+    alias_method :+, :concat
 
     def ==(other)
       to_s == other.to_s
@@ -30,11 +35,6 @@ module Rope
     def dup
       Rope.new(root)
     end
-
-    def slice(*args)
-      # TODO:
-    end
-    alias :[] :slice
 
     protected
       attr_reader :root
